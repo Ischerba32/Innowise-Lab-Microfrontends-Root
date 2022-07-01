@@ -11,15 +11,30 @@
     This is needed by babel to share largeish helper code for compiling async/await in older
     browsers. More information at https://github.com/single-spa/create-single-spa/issues/112
   -->
-    <script src="https://cdn.jsdelivr.net/npm/regenerator-runtime@0.13.7/runtime.min.js"></script>
+    <script>
+      const isDarkTheme = window?.matchMedia(
+        "(prefers-color-scheme: dark)"
+      ).matches;
+      const defaultTheme = isDarkTheme ? "dark" : "light";
 
+      window.store = {
+        theme: localStorage.getItem("app-theme") || defaultTheme,
+        setTheme(value) {
+          window.store.theme = value;
+          
+          console.log("New theme:", window.store.theme);
+          window.dispatchEvent(new Event("themeChange"));
+        },
+      };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/regenerator-runtime@0.13.7/runtime.min.js"></script>
     <!--
     This CSP allows any SSL-enabled host and for arbitrary eval(), but you should limit these directives further to increase your app's security.
     Learn more about CSP policies at https://content-security-policy.com/#directive
   -->
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self' https: localhost:*; script-src 'unsafe-inline' 'unsafe-eval' https: localhost:*; connect-src https: localhost:* ws://localhost:*; style-src 'unsafe-inline' https:; object-src 'none';"
+      content="default-src 'self' https: localhost:*; script-src 'unsafe-inline' 'unsafe-eval' https: localhost:*; connect-src https: localhost:* ws://localhost:* wss://*; style-src 'unsafe-inline' https:; object-src 'none';"
     />
     <meta name="importmap-type" content="systemjs-importmap" />
     <!-- If you wish to turn off import-map-overrides for specific environments (prod), uncomment the line below -->
@@ -39,7 +54,9 @@
         "imports": {
           "single-spa": "https://cdn.jsdelivr.net/npm/single-spa@5.9.0/lib/system/single-spa.min.js",
           "react": "https://unpkg.com/react@17/umd/react.production.min.js",
-          "react-dom": "https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"
+          "react-dom": "https://unpkg.com/react-dom@17/umd/react-dom.production.min.js",
+          "react-router-dom": "https://cdnjs.cloudflare.com/ajax/libs/react-router-dom/6.3.0/react-router-dom.development.min.js",
+          "@reduxjs/toolkit": "https://cdn.jsdelivr.net/npm/@reduxjs/toolkit@1.8.3/dist/index.min.js"
         }
       }
     </script>
@@ -58,7 +75,9 @@
         "imports": {
           "@single-spa/welcome": "https://unpkg.com/single-spa-welcome/dist/single-spa-welcome.js",
           "@Innowise/root-config": "//localhost:9000/Innowise-root-config.js",
-          "@Innowise/todo": "http://localhost:8080/Innowise-todo.js"
+          "@Innowise/todo": "http://localhost:8081/Innowise-todo.js",
+          "@Innowise/home": "http://localhost:8080/Innowise-home.js",
+          "@Innowise/mini-paint": "http://localhost:8082/Innowise-mini-paint.js"
         }
       }
     </script>
