@@ -1,6 +1,7 @@
 const { merge } = require("webpack-merge");
 const singleSpaDefaults = require("webpack-config-single-spa-ts");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const Dotenv = require('dotenv-webpack');
 
 module.exports = (webpackConfigEnv, argv) => {
   const orgName = "Innowise";
@@ -22,6 +23,7 @@ module.exports = (webpackConfigEnv, argv) => {
       }
     },
     plugins: [
+      new Dotenv(),
       new HtmlWebpackPlugin({
         inject: false,
         template: "src/index.ejs",
