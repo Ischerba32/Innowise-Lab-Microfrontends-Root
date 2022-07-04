@@ -21,7 +21,7 @@
         theme: localStorage.getItem("app-theme") || defaultTheme,
         setTheme(value) {
           window.store.theme = value;
-          
+
           console.log("New theme:", window.store.theme);
           window.dispatchEvent(new Event("themeChange"));
         },
